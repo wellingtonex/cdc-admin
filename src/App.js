@@ -10,39 +10,41 @@ class App extends Component {
     this.state = {lista: []};
   }
 
-  componentWillMount(){
-    console.log("willMount");
+  componentDidMount(){
+    console.log('componentDidMount');
     $.ajax({
         url:"http://localhost:8080/api/autores",
         dataType:"json",
         success:function(resposta){        
           this.setState({lista:resposta});
+          console.log('chegou a resposta')
         }.bind(this)
       }
     );
 }
 
   render() {
+    console.log('return')
     return (
-<div id="layout">
-    
-    <a href="#menu" id="menuLink" className="menu-link">
+    <div id="layout">
         
-        <span></span>
-    </a>
+        <a href="#menu" id="menuLink" className="menu-link">
+            
+            <span></span>
+        </a>
 
-    <div id="menu">
-        <div className="pure-menu">
-            <a className="pure-menu-heading" href="#">Company</a>
+        <div id="menu">
+            <div className="pure-menu">
+                <a className="pure-menu-heading" href="#">Company</a>
 
-            <ul className="pure-menu-list">
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autor</a></li>
-                <li className="pure-menu-item"><a href="#" className="pure-menu-link">Livro</a></li>
+                <ul className="pure-menu-list">
+                    <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
+                    <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autor</a></li>
+                    <li className="pure-menu-item"><a href="#" className="pure-menu-link">Livro</a></li>
 
-                
-            </ul>
-        </div>
+                    
+                </ul>
+            </div>
     </div>
 
         <div id="main">
@@ -83,7 +85,7 @@ class App extends Component {
                     {
                       this.state.lista.map(autor =>
                         (
-                          <tr>
+                          <tr key={autor.id}>
                             <td>{autor.nome}</td>
                             <td>{autor.email}</td>
                           </tr>

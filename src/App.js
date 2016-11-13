@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css';
 import $ from 'jquery';
+import InputCustomizado from './componentes/InputCustomizado';
 
 class App extends Component {
 
@@ -27,7 +28,6 @@ class App extends Component {
 
 enviaForm(evento){
   evento.preventDefault();
-  console.log("dados sendo enviados");
 
   $.ajax({
     url:"http://localhost:8080/api/autores",
@@ -39,7 +39,7 @@ enviaForm(evento){
       this.setState({lista:resposta});
     }.bind(this),
     error:function(resposta){
-        console.log("erro");
+        console.log(resposta);
     }
   });
 }
@@ -86,18 +86,9 @@ setSenha(evento) {
             <div className="content" id="content">
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
-                  <div className="pure-control-group">
-                    <label htmlFor="nome">Nome</label> 
-                    <input id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setNome}  />                  
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="email">Email</label> 
-                    <input id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail}  />
-                  </div>
-                  <div className="pure-control-group">
-                    <label htmlFor="senha">Senha</label> 
-                    <input id="senha" type="password" name="senha" value={this.state.senha}  onChange={this.setSenha}/>                                      
-                  </div>
+                  <InputCustomizado id="nome" type="text" name="nome" label="Nome" value={this.state.nome} onChange={this.setNome}/> 
+                  <InputCustomizado id="email" type="email" name="email" label="E-mail" value={this.state.email} onChange={this.setEmail}/>
+                  <InputCustomizado id="senha" type="password" name="senha" label="Senha" value={this.state.senha} onChange={this.setSenha}/>
                   <div className="pure-control-group">                                  
                     <label></label> 
                     <button type="submit" className="pure-button pure-button-primary">Gravar</button>                                    

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import InputCustomizado from './InputCustomizado';
 import PubSub from 'pubsub-js';
+import TratadorErros from '../TratadorErros';
 
 class FormularioAutor extends Component{
 
@@ -37,9 +38,15 @@ class FormularioAutor extends Component{
             data:JSON.stringify({nome:this.state.nome, email:this.state.email, senha:this.state.senha}),
             success:function(resposta){
                 PubSub.publish('atualiza-lista-autores', resposta);
+                this.setState({nome:'',email:'',senha:''});
             },
             error:function(resposta){
-                console.log(resposta);
+                if(resposta.status === 400) {
+                    new TratadorErros().publicaErros(resposta.responseJSON);
+                }
+            },
+            beforeSend: function(){
+                PubSub.publish("limpa-erros",{});
             }
         });
     }
@@ -48,9 +55,9 @@ class FormularioAutor extends Component{
         return (
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
-                  <InputCustomizado id="nome" type="text" name="nome" label="Nome" value={this.state.nome} onChange={this.setNome}/> 
-                  <InputCustomizado id="email" type="email" name="email" label="E-mail" value={this.state.email} onChange={this.setEmail}/>
-                  <InputCustomizado id="senha" type="password" name="senha" label="Senha" value={this.state.senha} onChange={this.setSenha}/>
+                  <InputCustomizado id="nome" type="text" nome="nome" label="Nome" value={this.state.nome} onChange={this.setNome}/> 
+                  <InputCustomizado id="email" type="email" nome="email" label="E-mail" value={this.state.email} onChange={this.setEmail}/>
+                  <InputCustomizado id="senha" type="password" nome="senha" label="Senha" value={this.state.senha} onChange={this.setSenha}/>
                   <div className="pure-control-group">                                  
                     <label></label> 
                     <button type="submit" className="pure-button pure-button-primary">Gravar</button>                                    

@@ -39,7 +39,7 @@ class FormularioAutor extends Component{
             success:function(resposta){
                 PubSub.publish('atualiza-lista-autores', resposta);
                 this.setState({nome:'',email:'',senha:''});
-            },
+            }.bind(this),
             error:function(resposta){
                 if(resposta.status === 400) {
                     new TratadorErros().publicaErros(resposta.responseJSON);

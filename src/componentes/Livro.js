@@ -10,21 +10,10 @@ class FormularioLivro extends Component {
         super();
         this.state = {titulo:'', preco:0, autorId:''};
         this.enviaForm = this.enviaForm.bind(this);
-        this.setTitulo = this.setTitulo.bind(this);
-        this.setPreco = this.setPreco.bind(this);
-        this.setAutorId = this.setAutorId.bind(this); 
     }
 
-    setTitulo(evento) {
-        this.setState({titulo:evento.target.value});
-    }
-
-    setPreco(evento) {
-        this.setState({preco:evento.target.value});
-    }
-
-    setAutorId(evento) {
-        this.setState({autorId:evento.target.value});
+    setValue(fieldName, evento) {
+        this.setState({[fieldName]:evento.target.value});
     }
 
     enviaForm(evento){
@@ -55,11 +44,11 @@ class FormularioLivro extends Component {
         return (
               <div className="pure-form pure-form-aligned">
                 <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="post">
-                    <InputCustomizado id="titulo" type="text" nome="titulo" label="Título" value={this.state.titulo} onChange={this.setTitulo}/> 
-                    <InputCustomizado id="preco" type="text" nome="preco" label="Preço" value={this.state.preco} onChange={this.setPreco}/>
+                    <InputCustomizado id="titulo" type="text" nome="titulo" label="Título" value={this.state.titulo} onChange={this.setValue.bind(this, 'titulo')}/> 
+                    <InputCustomizado id="preco" type="text" nome="preco" label="Preço" value={this.state.preco} onChange={this.setValue.bind(this, 'preco')}/>
                     <div className="pure-control-group">
                         <label htmlFor="autorId">Autor</label>
-                        <select value={this.state.autorId} name="autorId" id="autorID" onChange={this.setAutorId}>
+                        <select value={this.state.autorId} name="autorId" id="autorID" onChange={this.setValue.bind(this, 'autorId')}>
                             <option value="">Selecione o autor</option>
                             {
                                 this.props.autores.map(autor => <option key={autor.id} value={autor.id}>{autor.nome}</option>)
